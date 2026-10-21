@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title> CLICKS — Photography</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0a0a;
+    --bg-card:#141414;
+    --fg:#fafaf8;
+    --muted:#7a7a7a;
+    --line:#262626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--fg);
+    font-family:'Inter',sans-serif;
+    overflow-x:hidden;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; scroll-behavior:auto !important;}
+  }
+
+  a{color:inherit;text-decoration:none;}
+  ::selection{background:var(--fg);color:var(--bg);}
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    display:flex; justify-content:space-between; align-items:center;
+    padding:28px 6vw;
+    font-size:13px; letter-spacing:0.12em; text-transform:uppercase;
+    mix-blend-mode:difference;
+  }
+  nav .links{display:flex; gap:32px; color:var(--muted);}
+  nav .links a:hover{color:var(--fg);}
+  nav .links a:focus-visible, a:focus-visible{outline:1px solid var(--fg); outline-offset:4px;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    height:100vh;
+    display:flex; flex-direction:column; justify-content:center; align-items:center;
+    position:relative;
+    text-align:center;
+    padding:0 5vw;
+  }
+  .hero-eyebrow{
+    font-size:12px; letter-spacing:0.25em; text-transform:uppercase;
+    color:var(--muted); margin-bottom:28px;
+    opacity:0; animation:fadeUp 0.8s ease 1.4s forwards;
+  }
+  #hero-title{
+    font-family:'Fraunces', serif;
+    font-weight:400;
+    font-size:clamp(48px, 11vw, 148px);
+    line-height:0.98;
+    letter-spacing:-0.01em;
+  }
+  #hero-title .char{
+    display:inline-block;
+    opacity:0;
+    filter:blur(8px);
+    transform:translateY(-60px) rotate(var(--rot,0deg));
+    animation:develop 0.9s cubic-bezier(.2,.8,.2,1) forwards;
+  }
+  @keyframes develop{
+    0%{opacity:0; filter:blur(8px); transform:translateY(-60px) rotate(var(--rot,0deg));}
+    60%{opacity:1; filter:blur(2px);}
+    100%{opacity:1; filter:blur(0); transform:translateY(0) rotate(0deg);}
+  }
+  @keyframes fadeUp{
+    from{opacity:0; transform:translateY(12px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+  .hero-sub{
+    margin-top:28px;
+    color:var(--muted);
+    font-size:15px;
+    max-width:440px;
+    opacity:0; animation:fadeUp 0.8s ease 1.6s forwards;
+  }
+  .scroll-cue{
+    position:absolute; bottom:40px; left:50%; transform:translateX(-50%);
+    font-size:11px; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted);
+    opacity:0; animation:fadeUp 0.8s ease 2s forwards;
+    display:flex; flex-direction:column; align-items:center; gap:10px;
+  }
+  .scroll-cue .line{width:1px; height:28px; background:var(--muted); animation:pulse 2s infinite;}
+  @keyframes pulse{0%,100%{opacity:0.3;}50%{opacity:1;}}
+
+  /* ---------- SECTION HEADERS ---------- */
+  .section-head{
+    padding:0 6vw; margin-bottom:48px;
+    display:flex; justify-content:space-between; align-items:baseline;
+    border-bottom:1px solid var(--line);
+    padding-bottom:24px;
+  }
+  .section-head h2{
+    font-family:'Fraunces',serif; font-weight:400; font-size:clamp(28px,4vw,44px);
+  }
+  .section-head span{font-size:13px; color:var(--muted); letter-spacing:0.1em; text-transform:uppercase;}
+
+  /* ---------- BENTO GRID ---------- */
+  .bento-section{padding:140px 0 100px;}
+  .bento{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    grid-template-rows:240px 240px;
+    gap:14px;
+    padding:0 6vw;
+  }
+  .bento-item{
+    position:relative;
+    border-radius:2px;
+    overflow:hidden;
+    background:var(--bg-card);
+    border:1px solid var(--line);
+  }
+  .bento-item img{
+    background-color: #7a7a7a;
+    width:100%; height:100%; object-fit:contain;
+    filter:grayscale(100%) contrast(1.05);
+    transition:transform 0.7s cubic-bezier(.2,.8,.2,1), filter 0.5s;
+    display:block;
+  }
+  .bento-item:hover img{transform:scale(1.06); filter:grayscale(60%) contrast(1.1);}
+  .bento-item .label{
+    position:absolute; bottom:0; left:0; right:0;
+    padding:16px 18px;
+    background:linear-gradient(to top, rgba(0,0,0,0.75), transparent);
+    font-size:12px; letter-spacing:0.1em; text-transform:uppercase; color:var(--fg);
+    display:flex; justify-content:space-between;
+  }
+  .bento-item .label .n{color:var(--muted);}
+  .b1{grid-column:1/3; grid-row:1/3;}
+  .b2{grid-column:3/5; grid-row:1/2;}
+  .b3{grid-column:3/4; grid-row:2/3;}
+  .b4{grid-column:4/5; grid-row:2/3;}
+
+  @media (max-width:860px){
+    .bento{grid-template-columns:repeat(2,1fr); grid-template-rows:repeat(4,200px);}
+    .b1{grid-column:1/3; grid-row:1/2;}
+    .b2{grid-column:1/3; grid-row:2/3;}
+    .b3{grid-column:1/2; grid-row:3/4;}
+    .b4{grid-column:2/3; grid-row:3/4;}
+  }
+
+  /* ---------- STACK / SCROLL SEQUENCE ---------- */
+  .stack-section{
+    padding:60px 0 0;
+  }
+  .stack-intro{padding:0 6vw 80px; max-width:560px;}
+  .stack-intro p{color:var(--muted); font-size:16px; line-height:1.7;}
+  .stack{
+    position:relative;
+  }
+  .stack-card{
+    position:sticky;
+    top:0;
+    height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    cursor:pointer;
+  }
+  .stack-card img{
+    width:min(640px, 80vw);
+    height:78vh;
+    object-fit:cover;
+    filter:grayscale(100%) contrast(1.08);
+    border-radius:2px;
+    box-shadow:0 30px 80px rgba(0,0,0,0.6);
+    transition:filter 0.7s cubic-bezier(.2,.8,.2,1), transform 0.5s ease;
+  }
+  .stack-card:hover img,
+  .stack-card.is-colored img,
+  .stack-card img.is-colored{
+    filter:grayscale(0%) contrast(1);
+  }
+  .stack-card .frame-label{
+    position:absolute;
+    bottom:6%;
+    left:50%;
+    transform:translateX(-50%);
+    font-size:12px; letter-spacing:0.15em; text-transform:uppercase;
+    color:var(--fg);
+    background:rgba(0, 0, 0, 0.6);
+    padding:8px 16px;
+    border:1px solid var(--line);
+    backdrop-filter:blur(6px);
+    pointer-events:none;
+  }
+
+  /* ---------- ABOUT / CLOSING ---------- */
+  .closing{
+    padding:160px 6vw 80px;
+    text-align:center;
+  }
+  .closing h2{
+    font-family:'Fraunces',serif; font-weight:400;
+    font-size:clamp(36px,6vw,72px);
+    max-width:900px;
+    margin:0 auto 32px;
+    line-height:1.1;
+  }
+  .closing p{color:var(--muted); max-width:480px; margin:0 auto 40px; font-size:15px; line-height:1.7;}
+  
+  /* Contact Buttons */
+  .contact-actions{
+    display:flex;
+    gap:16px;
+    justify-content:center;
+    align-items:center;
+    flex-wrap:wrap;
+    margin:0 auto;
+    max-width:760px;
+  }
+  .cta-contact-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    border:1px solid var(--fg);
+    padding:16px 28px;
+    font-size:13px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    background:transparent;
+    color:var(--fg);
+    text-decoration:none;
+    cursor:pointer;
+    transition:background 0.3s ease, color 0.3s ease, transform 0.2s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    border-radius:2px;
+    font-family:'Inter', sans-serif;
+  }
+  .cta-contact-btn:hover{
+    background:var(--fg);
+    color:var(--bg);
+    transform:translateY(-2px);
+    box-shadow:0 8px 24px rgba(250,250,248,0.12);
+  }
+  .cta-contact-btn:active{
+    transform:translateY(0);
+  }
+  .cta-contact-btn .contact-icon{
+    flex-shrink:0;
+  }
+  .cta-contact-btn .external-arrow{
+    opacity:0.6;
+    font-size:12px;
+    margin-left:4px;
+    transition:transform 0.2s ease, opacity 0.2s ease;
+  }
+  .cta-contact-btn:hover .external-arrow{
+    transform:translate(2px, -2px);
+    opacity:1;
+  }
+  .cta-contact-btn.copy-btn{
+    border-color:var(--line);
+    color:var(--muted);
+  }
+  .cta-contact-btn.copy-btn:hover{
+    border-color:var(--fg);
+    background:rgba(255,255,255,0.06);
+    color:var(--fg);
+  }
+  .copy-toast{
+    position:fixed;
+    bottom:32px;
+    left:50%;
+    transform:translateX(-50%) translateY(20px);
+    background:var(--fg);
+    color:var(--bg);
+    padding:10px 22px;
+    border-radius:20px;
+    font-size:12px;
+    letter-spacing:0.08em;
+    font-weight:500;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity 0.3s ease, transform 0.3s ease;
+    z-index:999;
+    box-shadow:0 12px 30px rgba(0,0,0,0.5);
+  }
+  .copy-toast.show{
+    opacity:1;
+    transform:translateX(-50%) translateY(0);
+  }
+
+  footer{
+    padding:40px 6vw 32px;
+    display:flex; justify-content:space-between; align-items:center;
+    border-top:1px solid var(--line);
+    font-size:12px; color:var(--muted);
+    letter-spacing:0.05em;
+  }
+
+  /* ---------- CONTENT & SCREENSHOT PROTECTION ---------- */
+  body, html {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+  }
+  img {
+    -webkit-user-drag: none;
+    user-drag: none;
+  }
+  #site-wrapper {
+    transition: filter 0.25s ease, opacity 0.25s ease;
+  }
+  body.protected #site-wrapper {
+    filter: blur(50px) brightness(0.12);
+    pointer-events: none;
+    user-select: none;
+  }
+  #screenshot-shield {
+    position: fixed;
+    inset: 0;
+    z-index: 999999;
+    background: rgba(10, 10, 10, 0.94);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 24px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+  }
+  body.protected #screenshot-shield {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .shield-box {
+    border: 1px solid var(--line);
+    background: #121212;
+    padding: 40px 36px;
+    max-width: 460px;
+    width: 90%;
+    border-radius: 4px;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.85);
+  }
+  .shield-icon {
+    font-size: 32px;
+    margin-bottom: 16px;
+    display: inline-block;
+  }
+  .shield-title {
+    font-family: 'Fraunces', serif;
+    font-size: 26px;
+    font-weight: 400;
+    margin-bottom: 12px;
+    letter-spacing: -0.01em;
+  }
+  .shield-desc {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 28px;
+  }
+  .shield-btn {
+    border: 1px solid var(--fg);
+    background: transparent;
+    color: var(--fg);
+    padding: 12px 28px;
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    transition: background 0.3s, color 0.3s, transform 0.2s;
+  }
+  .shield-btn:hover {
+    background: var(--fg);
+    color: var(--bg);
+    transform: translateY(-2px);
+  }
+
+  /* Print Protection: blank page if attempting Ctrl+P / Cmd+P to save PDF/screenshot */
+  @media print {
+    html, body {
+      display: none !important;
+      visibility: hidden !important;
+    }
+  }
+
+  /* reveal-on-scroll for bento + headers */
+  .reveal{opacity:0; transform:translateY(24px); transition:opacity 0.8s ease, transform 0.8s ease;}
+  .reveal.is-visible{opacity:1; transform:translateY(0);}
+</style>
+</head>
+<body>
+
+<div id="site-wrapper">
+
+<nav>
+  <div class="logo"> CLICKS</div>
+  <div class="links">
+    <a href="#work">gallery</a>
+    <a href="#series">Series</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-eyebrow">Photography — Est. 2026</div>
+  <h1 id="hero-title"> </h1>
+  <p class="hero-sub">A dumb gallery of a cringe girl. scroll around peeps. Every frame developed meaningless emotions, one tray at a time. dont mind me i like yappingggg (ai wrote that im keeping it coz it sounds poetic lol )</p>
+  <div class="scroll-cue"><span class="line"></span>Scroll</div>
+</section>
+
+<section class="bento-section" id="work">
+  <div class="section-head reveal">
+    <h2>Selected Work</h2>
+    <span>04 Frames</span>
+  </div>
+  <div class="bento">
+    <div class="bento-item b1 reveal">
+      <img src="https://i.pinimg.com/736x/b2/5a/75/b25a75491989dc892edd779976c32949.jpg" alt="Portrait study in low light" loading="lazy" >
+      <div class="label"><span>ayoo peeps thats mee!!</span><span class="n">01</span></div>
+    </div>
+    <div class="bento-item b2 reveal">
+      <img src="https://i.pinimg.com/736x/6d/66/5a/6d665a27a2aab34e7fb214d0509b990b.jpg" alt="Architectural facade detail" width="50px" loading="lazy">
+      <div class="label"><span>?</span><span class="n">02</span></div>
+    </div>
+    <div class="bento-item b3 reveal">
+      <img src="https://i.pinimg.com/736x/da/7b/ac/da7bac6df6d52670f9fee6901ebdbc91.jpg" alt="Mountain ridge in fog" loading="lazy">
+      <div class="label"><span>?</span><span class="n">03</span></div>
+    </div>
+    <div class="bento-item b4 reveal">
+      <img src="https://i.pinimg.com/736x/f9/b2/9b/f9b29b4efb2f77d15b01344350ec1081.jpg" alt="Street photography figure crossing" loading="lazy">
+      <div class="label"><span>Crossing</span><span class="n">04</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="stack-section" id="series">
+  <div class="section-head reveal">
+    <h2>The Contact Sheet</h2>
+    <span>Scroll to advance</span>
+  </div>
+  <div class="stack-intro reveal">
+    <p>something like a public galleryy enjoy scrolling yeyyy !!!.</p>
+  </div>
+
+  <div class="stack">
+    <div class="stack-card">
+      <img src="https://i.pinimg.com/736x/41/fe/5c/41fe5c650737d6dd3735d04deb61f3e4.jpg" alt="Forest light through trees">
+      <div class="frame-label">Frame 01 — aww!! i miss my homiesss !!</div>
+    </div>
+    <div class="stack-card">
+      <img src="https://i.pinimg.com/736x/d6/b1/37/d6b1373f4059523ead1654a24824b7ee.jpg" alt="Empty road through landscape">
+      <div class="frame-label">Frame 02 — The Long Road</div>
+    </div>
+    <div class="stack-card">
+      <img src="https://i.pinimg.com/736x/b2/5a/75/b25a75491989dc892edd779976c32949.jpg" alt="Coastal cliffs and waves">
+      <div class="frame-label">Frame 03 — eww arpii !!1</div>
+    </div>
+    <div class="stack-card">
+      <img src="https://i.pinimg.com/736x/90/39/1f/90391f66616a9997cf40c15e2d8afef7.jpg" alt="Lone figure on mountain summit">
+      <div class="frame-label">Frame 04 — Summit, Alone</div>
+    </div>
+    <div class="stack-card">
+      <img src="https://i.pinimg.com/736x/62/c8/3b/62c83bbbf034661566a6958a75d17fe9.jpg" alt="City skyline silhouette at dusk">
+      <div class="frame-label">Frame 05 — yeyy pizza !</div>
+    </div>
+    <div class="stack-card">
+      <img src="https://i.pinimg.com/736x/50/be/4a/50be4ab019410e9c90fc660d0b3f2054.jpg" alt="City skyline silhouette at dusk">
+      <div class="frame-label">Frame 06 — ????????</div>
+    </div>
+     <div class="stack-card">
+      <img src="https://i.pinimg.com/736x/45/88/8c/45888c9dc380783c3a22504bc2986ec5.jpg" alt="City skyline silhouette at dusk">
+      <div class="frame-label">Frame 07 — ???????</div>
+    </div>
+     <div class="stack-card">
+      <img src="https://i.pinimg.com/736x/7d/c9/0c/7dc90c4054c5f45fabd46d4f33da68ef.jpg" alt="City skyline silhouette at dusk">
+      <div class="frame-label">Frame 08 — pretty right ??</div>
+    </div>
+    <div class="stack-card">
+      <img src="https://i.pinimg.com/736x/dc/87/a0/dc87a022308be72ce45c6c19a4309ec8.jpg" alt="City skyline silhouette at dusk">
+      <div class="frame-label">Frame 09 — all flesh rots </div>
+    </div>
+     
+     
+    </div>
+    
+    
+  </div>
+</section>
+
+<section class="closing" id="contact">
+  <h2 class="reveal">lots of love whoever showed up till here thnks peeps </h2>
+  <p class="reveal">hope to stay w me hehe !! feel free to reach out anytime</p>
+  
+  <div class="contact-actions reveal">
+    <a class="cta-contact-btn insta-btn" href="https://instagram.com/arpiiiehehe" target="_blank" rel="noopener noreferrer">
+      <svg class="contact-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+      </svg>
+      <span>Instagram · @arpiiiehehe</span>
+      <span class="external-arrow">↗</span>
+    </a>
+
+    <a class="cta-contact-btn email-btn" href="mailto:arpitapahadi17@gmail.com">
+      <svg class="contact-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+        <polyline points="22,6 12,13 2,6"></polyline>
+      </svg>
+      <span>Gmail · arpitapahadi17@gmail.com</span>
+      <span class="external-arrow">↗</span>
+    </a>
+
+    <button class="cta-contact-btn copy-btn" id="copyEmailBtn" type="button" aria-label="Copy Gmail address">
+      <svg class="contact-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+      </svg>
+      <span id="copyBtnText">Copy Email</span>
+    </button>
+  </div>
+  <div id="copyToast" class="copy-toast" role="status" aria-live="polite">Email copied to clipboard! ✨</div>
+</section>
+
+<footer>
+  <span>© 2026 clicks by arpita</span>
+  <span>lemme know how u felt about this site...</span>
+</footer>
+
+</div><!-- #site-wrapper -->
+
+<!-- Screenshot and Content Protection Shield -->
+<div id="screenshot-shield" aria-hidden="true">
+  <div class="shield-box">
+    <div class="shield-icon">📸</div>
+    <h3 class="shield-title">Content Protected</h3>
+    <p class="shield-desc">Screenshots and media captures are strictly restricted on this gallery to protect artist photography copyrights.</p>
+    <button type="button" class="shield-btn" id="resumeViewingBtn">Resume Viewing</button>
+  </div>
+</div>
+
+<script>
+  // Falling-letters "developing" hero animation
+  const title = document.getElementById('hero-title');
+  const text = "DUMB PICS EHH!!";
+  title.setAttribute('aria-label', text);
+  text.split('').forEach((ch, i) => {
+    const span = document.createElement('span');
+    if (ch === ' ') {
+      span.innerHTML = '&nbsp;';
+      span.style.width = '0.3em';
+    } else {
+      span.textContent = ch;
+      span.classList.add('char');
+      const rot = (Math.random() * 16 - 8).toFixed(1);
+      span.style.setProperty('--rot', rot + 'deg');
+      span.style.animationDelay = (0.15 + i * 0.045) + 's';
+    }
+    title.appendChild(span);
+  });
+
+  // Reveal on scroll
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('is-visible');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
+
+  // Image color reveal on scroll down and click for Series stack cards
+  const stackCards = document.querySelectorAll('.stack-card');
+
+  // 1. Reveal original color when scrolling down into view
+  const colorObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-colored');
+        const img = entry.target.querySelector('img');
+        if (img) img.classList.add('is-colored');
+      }
+    });
+  }, { threshold: 0.2 });
+
+  stackCards.forEach(el => colorObserver.observe(el));
+
+  // Additional scroll listener to handle sticky stack-cards smoothly
+  function checkScrollColor() {
+    const vh = window.innerHeight;
+    stackCards.forEach(el => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top <= vh * 0.75 && rect.bottom >= vh * 0.1) {
+        el.classList.add('is-colored');
+        const img = el.querySelector('img');
+        if (img) img.classList.add('is-colored');
+      }
+    });
+  }
+  window.addEventListener('scroll', checkScrollColor, { passive: true });
+  checkScrollColor();
+
+  // 2. Click on any stack card to toggle between original color and black & white
+  stackCards.forEach(card => {
+    card.addEventListener('click', (e) => {
+      if (e.target.closest('a, button')) return;
+      card.classList.toggle('is-colored');
+      const img = card.querySelector('img');
+      if (img) {
+        img.classList.toggle('is-colored');
+      }
+    });
+  });
+
+  // 3. Copy Gmail address with toast feedback
+  const copyBtn = document.getElementById('copyEmailBtn');
+  const copyBtnText = document.getElementById('copyBtnText');
+  const copyToast = document.getElementById('copyToast');
+  if (copyBtn) {
+    copyBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const email = 'arpitapahadi17@gmail.com';
+      navigator.clipboard.writeText(email).then(() => {
+        copyBtnText.textContent = 'Copied!';
+        if (copyToast) {
+          copyToast.classList.add('show');
+          setTimeout(() => copyToast.classList.remove('show'), 2500);
+        }
+        setTimeout(() => {
+          copyBtnText.textContent = 'Copy Email';
+        }, 2200);
+      }).catch(() => {
+        window.location.href = `mailto:${email}`;
+      });
+    });
+  }
+
+  // ---------- ANTI-SCREENSHOT & CONTENT PROTECTION ----------
+  const shield = document.getElementById('screenshot-shield');
+  const resumeBtn = document.getElementById('resumeViewingBtn');
+
+  function enableShield() {
+    document.body.classList.add('protected');
+    if (shield) shield.setAttribute('aria-hidden', 'false');
+    // Clear clipboard if a screenshot key was triggered
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText('').catch(() => {});
+    }
+  }
+
+  function disableShield() {
+    document.body.classList.remove('protected');
+    if (shield) shield.setAttribute('aria-hidden', 'true');
+  }
+
+  if (resumeBtn) {
+    resumeBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      disableShield();
+    });
+  }
+
+  // A. Blur screen immediately on window unfocus / blur (covers Mac Cmd+Shift+3/4/5 snipping & Windows Snipping tool overlay)
+  window.addEventListener('blur', () => {
+    enableShield();
+  });
+
+  window.addEventListener('focus', () => {
+    setTimeout(disableShield, 250);
+  });
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      enableShield();
+    }
+  });
+
+  // B. Intercept Screenshot, Print, and Inspect Keyboard Shortcuts
+  window.addEventListener('keydown', (e) => {
+    // PrintScreen key
+    if (e.key === 'PrintScreen') {
+      e.preventDefault();
+      enableShield();
+      return;
+    }
+
+    // Mac Cmd+Shift+3, 4, 5 / Windows Win+Shift+S / Ctrl+Shift+S
+    if ((e.metaKey || e.ctrlKey) && e.shiftKey && ['3', '4', '5', 's', 'S'].includes(e.key)) {
+      e.preventDefault();
+      enableShield();
+      return;
+    }
+
+    // Print shortcut Ctrl+P / Cmd+P
+    if ((e.metaKey || e.ctrlKey) && (e.key === 'p' || e.key === 'P')) {
+      e.preventDefault();
+      enableShield();
+      return;
+    }
+
+    // Save page Ctrl+S / Cmd+S
+    if ((e.metaKey || e.ctrlKey) && (e.key === 's' || e.key === 'S')) {
+      e.preventDefault();
+      return;
+    }
+
+    // View source / DevTools (F12, Ctrl+U, Ctrl+Shift+I/C/J)
+    if (
+      e.key === 'F12' ||
+      ((e.metaKey || e.ctrlKey) && (e.key === 'u' || e.key === 'U')) ||
+      ((e.metaKey || e.ctrlKey) && e.shiftKey && ['i', 'I', 'c', 'C', 'j', 'J'].includes(e.key))
+    ) {
+      e.preventDefault();
+      return;
+    }
+  }, true);
+
+  // C. Disable Right Click Context Menu
+  document.addEventListener('contextmenu', (e) => {
+    e.preventDefault();
+  });
+
+  // D. Disable Image Dragging
+  document.addEventListener('dragstart', (e) => {
+    e.preventDefault();
+  });
+  document.querySelectorAll('img').forEach(img => {
+    img.setAttribute('draggable', 'false');
+  });
+</script>
+
+</body>
+</html>
